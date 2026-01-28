@@ -1,1 +1,206 @@
-<h1>Hello world</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natthawat Noiauthai</title>
+    <style>
+        /* --- 1. SETTINGS & RESET --- */
+        :root {
+            --bg-color: #0f0f11; /* สีพื้นหลังเข้มเกือบดำ */
+            --text-color: #f0f0f0; /* สีตัวหนังสือขาวนวล */
+            --accent-color: #64ffda; /* สีเขียวมิ้นท์ (เปลี่ยนได้ตามชอบ) */
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box_sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* ป้องกัน Scroll */
+            position: relative;
+        }
+
+        /* --- 2. BACKGROUND EFFECT (Subtle Gradient) --- */
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(100, 255, 218, 0.05) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- 3. MAIN CONTENT --- */
+        .container {
+            text-align: center;
+            z-index: 1;
+            padding: 2rem;
+            opacity: 0; /* ซ่อนก่อน แล้วค่อย Fade in */
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8892b0;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+            height: 1.5rem; /* จองพื้นที่ไว้กันกระตุก */
+        }
+
+        /* Cursor กระพริบ */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2rem;
+            background-color: var(--accent-color);
+            margin-left: 5px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        /* --- 4. BUTTON --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.1);
+        }
+
+        /* --- 5. SOCIAL LINKS (Optional) --- */
+        .socials {
+            margin-top: 3rem;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .socials a {
+            color: #8892b0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .socials a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- 6. ANIMATIONS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .subtitle { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow"></div>
+
+    <div class="container">
+        <h1>Natthawat Noiauthai</h1>
+
+        <div class="subtitle">
+            I am a <span id="typing-text"></span><span class="cursor"></span>
+        </div>
+
+        <a href="mailto:your-email@example.com" class="btn">Get In Touch</a>
+
+        <div class="socials">
+            <a href="https://github.com/nut-natthawat" target="_blank">GitHub</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Instagram</a>
+        </div>
+    </div>
+
+    <script>
+        // --- JAVASCRIPT: TYPEWRITER EFFECT ---
+        const textElement = document.getElementById('typing-text');
+        
+        // คำที่จะให้พิมพ์สลับไปมา แก้ตรงนี้ได้เลย
+        const words = ["Developer.", "Learner.", "Tech Enthusiast.", "Creator."];
+        
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        
+        function type() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                // ลบตัวอักษร
+                textElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                // พิมพ์ตัวอักษร
+                textElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            // ความเร็วในการพิมพ์ (พิมพ์เร็ว / ลบเร็ว)
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                // พิมพ์เสร็จแล้ว หยุดรอแป๊บนึง
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                // ลบหมดแล้ว เปลี่ยนคำใหม่
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+
+        // เริ่มทำงานเมื่อโหลดหน้าเว็บ
+        document.addEventListener('DOMContentLoaded', type);
+    </script>
+
+</body>
+</html>
